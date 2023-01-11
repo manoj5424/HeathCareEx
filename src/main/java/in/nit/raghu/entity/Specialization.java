@@ -13,8 +13,7 @@ import lombok.Data;
 @Data
 @Table(name="specialization_tab")
 public class Specialization {
-	private String manoj;
-	private String xmanoj;
+	
 	
 
 	 	@Id
