@@ -30,7 +30,6 @@ public class TestSpecializationRepository {
 	
 	@Test
 	@Order(1)
-	@Disabled
 	public void testSpecCreate() {
 		Specialization spec = new Specialization(null, "CRDLS", "Cardiologist", "They're expert in Heart Deases");
 		spec = repo.save(spec);
