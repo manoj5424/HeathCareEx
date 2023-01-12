@@ -50,4 +50,19 @@ public class SpecializationController {
 		attributes.addAttribute("message", "Record is ("+id+") removed");
 		return "redirect:all";
 	}
+	
+	@GetMapping("/edit")
+	public String showEditPage(@RequestParam Long id, Model model) {
+		Specialization spec = service.getOneSpecialization(id);
+		model.addAttribute("specialization", spec);
+		return "SpecializationEdit";
+	}
+	
+	@PostMapping("/update")
+	public String updateDate(
+			@ModelAttribute Specialization specialization,RedirectAttributes attributes) {
+		service.updateSpecialization(specialization);
+		attributes.addAttribute("message", "Record ("+specialization.getId()+") is updated");
+		return "redirect:all";
+	}
 }
