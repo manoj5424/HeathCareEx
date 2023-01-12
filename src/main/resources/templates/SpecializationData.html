@@ -28,7 +28,8 @@
 						<td th:text="${ob.specName}"></td>
 						<td th:text="${ob.specNote}"></td>
 						<td>
-							<a>DELETE</a> | <a>EDIT</a>
+							<a th:href="@{/spec/delete(id=${ob.id})}" class="btn btn-danger">DELETE <i class="fas fa-trash-alt" aria-hidden="true"></a> 
+							<a th:href="@{/spec/edit(id=${ob.id})}" class="btn btn-warning">EDIT <i class="fas fa-user-edit" aria-hidden="true"></a>
 						</td>
 					</tr>
 				</table>
