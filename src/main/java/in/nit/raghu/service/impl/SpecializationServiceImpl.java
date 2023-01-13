@@ -2,11 +2,13 @@ package in.nit.raghu.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import in.nit.raghu.entity.Specialization;
+import in.nit.raghu.exception.SpecializationNotFoundException;
 import in.nit.raghu.repo.SpecializationRepository;
 import in.nit.raghu.service.ISpecializationService;
 @Service
@@ -24,16 +26,21 @@ public class SpecializationServiceImpl implements ISpecializationService {
 	}
 
 	public void removeSpecialization(Long id) {
-		repo.deleteById(id);
+		//repo.deleteById(id);
+		repo.delete(getOneSpecialization(id));
 	}
 
 	public Specialization getOneSpecialization(Long id) {
-		 Optional<Specialization> optional = repo.findById(id);
-		 if(optional.isPresent()) {
-			return optional.get();
-		 }else {
-		 return null;
-		 }
+		 
+		
+		
+		Optional<Specialization> optional = repo.findById(id);
+		return repo.findById(id).orElseThrow(()->new SpecializationNotFoundException(id+""Not Found")); 
+//		if(optional.isPresent()) {
+//			return optional.get();
+//		 }else {
+//		 throw new SpecializationNotFoundException(id+" Not Found");
+//		 }
 	}
 
 	public void updateSpecialization(Specialization spec) {
@@ -47,6 +54,10 @@ public class SpecializationServiceImpl implements ISpecializationService {
 		boolean exist=count>0 ? true : false;
 		return exist; */
 		return repo.getSpecCodeCount(specCode)>0;
+	}
+	
+	public boolean isSpecNameExit(String specName) {
+		return repo.getSpecNameCount(specName)>0;
 	}
 
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import in.nit.raghu.entity.Specialization;
+import in.nit.raghu.exception.SpecializationNotFoundException;
 import in.nit.raghu.service.ISpecializationService;
 
 @Controller
@@ -47,7 +48,11 @@ public class SpecializationController {
 	
 	@GetMapping("/delete")
 	public String deleteData(@RequestParam Long id, RedirectAttributes attributes) {
+		try {
 		service.removeSpecialization(id);
+		}catch (SpecializationNotFoundException e) {
+			e.printStackTrace();
+		}
 		attributes.addAttribute("message", "Record is ("+id+") removed");
 		return "redirect:all";
 	}
@@ -67,12 +72,22 @@ public class SpecializationController {
 		return "redirect:all";
 	}
 	
-	@GetMapping("/chechcode")
+	@GetMapping("/checkcode")
 	public @ResponseBody String validaSpecCode(@RequestParam String code) { //@responcebody do not search as view name (not return view name)
 		String message="";
 		if(service.isSpecCodeExit(code)){
-			message = code+", already exist";	//this is respnse
+			message = code+", already exist";	//this is response
 		}
 		return message; //not html / view name
+	}
+	
+	@GetMapping("/checkname")
+	@ResponseBody
+	public String validateSpecName(@RequestParam String name) {
+		String message="";
+		if(service.isSpecNameExit(name)) {
+			message = name+", already exist";
+		}
+		return message;
 	}
 }

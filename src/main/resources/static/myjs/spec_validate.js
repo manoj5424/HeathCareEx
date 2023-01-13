@@ -26,10 +26,10 @@ $(document).ready(function() {
 			specCodeError = false;
 		} else {
 			$.ajax({
-				url : 'chechcode',
+				url : 'checkcode',
 				data : {"code":val},
 				success:function(respTxt){
-					if(respTxt!=""){
+					if(respTxt!=''){
 						$("#specCodeError").show();
 						$("#specCodeError").html("respTxt");
 						$("#specCodeError").css("color", "red");
@@ -40,13 +40,11 @@ $(document).ready(function() {
 					}
 				}
 			})
-			//$("#specCodeError").hide();
-			//specCodeError = true;
-		}
+			}
 		return specCodeError;
 	}
 
-	function validate_specName() {
+function validate_specName() {
 		var val = $("#specName").val();
 		var exp = /^[A-Za-z0-9\s\.]{4,60}$/;
 		//check empty or not
@@ -61,12 +59,24 @@ $(document).ready(function() {
 			$("#specNameError").css("color", "red");
 			specNameError = false;
 		} else {
-			$("#specNameError").hide();
-			specNameError = true;
+			$.ajax({
+				url : 'checkname',
+				data : {"name":val},
+				success:function(respTxt){
+					if(respTxt!=''){
+						$("#specNameError").show();
+						$("#specNameError").html("respTxt");
+						$("#specNameError").css("color", "red");
+						specNameError = false;
+					}else{
+						$("#specNameError").hide();
+						specNameError = true;
+					}
+				}
+			})
 		}
 		return specNameError;
 	}
-
 	function validate_specNote() {
 		var val = $("#specNote").val();
 		var exp = /^[A-Za-z0-9\s\.\-\,\']{10,250}$/;

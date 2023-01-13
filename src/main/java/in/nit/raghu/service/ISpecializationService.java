@@ -19,4 +19,6 @@ public interface ISpecializationService {
 	
 	public boolean isSpecCodeExit(String specCode);
 	
+	public boolean isSpecNameExit(String specName);
+	
 }
