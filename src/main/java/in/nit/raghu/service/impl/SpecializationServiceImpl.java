@@ -11,12 +11,13 @@ import in.nit.raghu.entity.Specialization;
 import in.nit.raghu.exception.SpecializationNotFoundException;
 import in.nit.raghu.repo.SpecializationRepository;
 import in.nit.raghu.service.ISpecializationService;
+
 @Service
 public class SpecializationServiceImpl implements ISpecializationService {
 
 	@Autowired
 	private SpecializationRepository repo;
-	
+
 	public Long saveSpecialization(Specialization spec) {
 		return repo.save(spec).getId();
 	}
@@ -26,38 +27,38 @@ public class SpecializationServiceImpl implements ISpecializationService {
 	}
 
 	public void removeSpecialization(Long id) {
-		//repo.deleteById(id);
+		// repo.deleteById(id);
 		repo.delete(getOneSpecialization(id));
 	}
 
 	public Specialization getOneSpecialization(Long id) {
-		 
-		
-		
-		Optional<Specialization> optional = repo.findById(id);
-		return repo.findById(id).orElseThrow(()->new SpecializationNotFoundException(id+""Not Found")); 
-//		if(optional.isPresent()) {
-//			return optional.get();
-//		 }else {
-//		 throw new SpecializationNotFoundException(id+" Not Found");
-//		 }
+
+		return repo.findById(id).orElseThrow(() -> new SpecializationNotFoundException(id + "Not Found"));
+		/*
+		 * Optional<Specialization> optional = repo.findById(id);
+		 * if(optional.isPresent()) { 
+		 * return optional.get(); 
+		 * }else { 
+		 * throw new SpecializationNotFoundException(id+" Not Found"); 
+		 * }
+		 */
 	}
 
 	public void updateSpecialization(Specialization spec) {
 		repo.save(spec);
 	}
-	
-	
+
 	public boolean isSpecCodeExit(String specCode) {
 
-/*		Integer count = repo.getSpecCodeCount(specCode);
-		boolean exist=count>0 ? true : false;
-		return exist; */
-		return repo.getSpecCodeCount(specCode)>0;
+		/*
+		 * Integer count = repo.getSpecCodeCount(specCode); boolean exist=count>0 ? true
+		 * : false; return exist;
+		 */
+		return repo.getSpecCodeCount(specCode) > 0;
 	}
-	
+
 	public boolean isSpecNameExit(String specName) {
-		return repo.getSpecNameCount(specName)>0;
+		return repo.getSpecNameCount(specName) > 0;
 	}
 
 }

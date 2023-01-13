@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import in.nit.raghu.entity.Specialization;
 import in.nit.raghu.exception.SpecializationNotFoundException;
 import in.nit.raghu.service.ISpecializationService;
+import in.nit.raghu.view.SpecializationExcelView;
 
 @Controller
 @RequestMapping("/spec")
@@ -50,18 +52,31 @@ public class SpecializationController {
 	public String deleteData(@RequestParam Long id, RedirectAttributes attributes) {
 		try {
 		service.removeSpecialization(id);
-		}catch (SpecializationNotFoundException e) {
-			e.printStackTrace();
-		}
 		attributes.addAttribute("message", "Record is ("+id+") removed");
+
+		}
+		catch (SpecializationNotFoundException e) {
+			e.printStackTrace();
+			attributes.addAttribute("message", e.getMessage());
+
+		}
 		return "redirect:all";
 	}
 	
 	@GetMapping("/edit")
-	public String showEditPage(@RequestParam Long id, Model model) {
+	public String showEditPage(@RequestParam Long id, Model model, RedirectAttributes attributes) {
+		String page=null;
+		try {
 		Specialization spec = service.getOneSpecialization(id);
 		model.addAttribute("specialization", spec);
-		return "SpecializationEdit";
+		page = "SpecializationEdit";
+		
+		}catch (SpecializationNotFoundException e) {
+			e.printStackTrace();
+			attributes.addAttribute("message", e.getMessage());
+
+		}
+		return page;
 	}
 	
 	@PostMapping("/update")
@@ -89,5 +104,17 @@ public class SpecializationController {
 			message = name+", already exist";
 		}
 		return message;
+	}
+	
+	@GetMapping("/excel")
+	public ModelAndView exportToExcel() {
+		ModelAndView m = new ModelAndView();
+		m.setView(new SpecializationExcelView());
+		
+		List<Specialization> list = service.getAllSpecialization();
+		m.addObject("list",list);
+		
+		
+		return m;
 	}
 }
