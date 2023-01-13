@@ -25,8 +25,23 @@ $(document).ready(function() {
 			$("#specCodeError").css("color", "red");
 			specCodeError = false;
 		} else {
-			$("#specCodeError").hide();
-			specCodeError = true;
+			$.ajax({
+				url : 'chechcode',
+				data : {"code":val},
+				success:function(respTxt){
+					if(respTxt!=""){
+						$("#specCodeError").show();
+						$("#specCodeError").html("respTxt");
+						$("#specCodeError").css("color", "red");
+						specCodeError = false;
+					}else{
+						$("#specCodeError").hide();
+						specCodeError = true;
+					}
+				}
+			})
+			//$("#specCodeError").hide();
+			//specCodeError = true;
 		}
 		return specCodeError;
 	}

@@ -16,4 +16,7 @@ public interface ISpecializationService {
 	
 	public void updateSpecialization(Specialization spec);
 	
+	
+	public boolean isSpecCodeExit(String specCode);
+	
 }

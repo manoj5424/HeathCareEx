@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import in.nit.raghu.entity.Specialization;
@@ -64,5 +65,14 @@ public class SpecializationController {
 		service.updateSpecialization(specialization);
 		attributes.addAttribute("message", "Record ("+specialization.getId()+") is updated");
 		return "redirect:all";
+	}
+	
+	@GetMapping("/chechcode")
+	public @ResponseBody String validaSpecCode(@RequestParam String code) { //@responcebody do not search as view name (not return view name)
+		String message="";
+		if(service.isSpecCodeExit(code)){
+			message = code+", already exist";	//this is respnse
+		}
+		return message; //not html / view name
 	}
 }
