@@ -88,10 +88,13 @@ public class SpecializationController {
 	}
 	
 	@GetMapping("/checkcode")
-	public @ResponseBody String validaSpecCode(@RequestParam String code) { //@responcebody do not search as view name (not return view name)
+	public @ResponseBody String validaSpecCode(@RequestParam String code, 
+			@RequestParam Long id) { //@responcebody do not search as view name (not return view name)
 		String message="";
-		if(service.isSpecCodeExit(code)){
-			message = code+", already exist";	//this is response
+		if(id==0 && service.isSpecCodeExit(code)){
+			message = "("+code+"), already exist";	//this is response
+		}else if(id!=0 && service.isSpecCodeExistForEdit(code,id)){
+			
 		}
 		return message; //not html / view name
 	}
@@ -101,7 +104,7 @@ public class SpecializationController {
 	public String validateSpecName(@RequestParam String name) {
 		String message="";
 		if(service.isSpecNameExit(name)) {
-			message = name+", already exist";
+			message = "("+name+"), already exist";
 		}
 		return message;
 	}

@@ -21,4 +21,6 @@ public interface ISpecializationService {
 	
 	public boolean isSpecNameExit(String specName);
 	
+	boolean isSpecCodeExistForEdit(String specCode, Long id);
+	
 }

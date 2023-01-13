@@ -25,13 +25,18 @@ $(document).ready(function() {
 			$("#specCodeError").css("color", "red");
 			specCodeError = false;
 		} else {
+			var id=0;
+			if($("#id").val()!=undefined){
+				specCodeError = true;
+				id = $("#id").val();
+			}	
 			$.ajax({
 				url : 'checkcode',
-				data : {"code":val},
+				data : {"code":val,"id":id},
 				success:function(respTxt){
 					if(respTxt!=''){
 						$("#specCodeError").show();
-						$("#specCodeError").html("respTxt");
+						$("#specCodeError").html(respTxt);
 						$("#specCodeError").css("color", "red");
 						specCodeError = false;
 					}else{
@@ -65,7 +70,7 @@ function validate_specName() {
 				success:function(respTxt){
 					if(respTxt!=''){
 						$("#specNameError").show();
-						$("#specNameError").html("respTxt");
+						$("#specNameError").html(respTxt);
 						$("#specNameError").css("color", "red");
 						specNameError = false;
 					}else{

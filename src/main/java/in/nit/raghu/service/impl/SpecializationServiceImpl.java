@@ -61,4 +61,9 @@ public class SpecializationServiceImpl implements ISpecializationService {
 		return repo.getSpecNameCount(specName) > 0;
 	}
 
+	@Override
+	public boolean isSpecCodeExistForEdit(String specCode, Long id) {
+
+		return repo.getSpecCodeCountForEdit(specCode, id)>0;
+	}
 }
