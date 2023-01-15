@@ -1,6 +1,7 @@
 package in.nit.raghu.service;
 
 import java.util.List;
+import java.util.Map;
 
 import in.nit.raghu.entity.Specialization;
 
@@ -23,4 +24,5 @@ public interface ISpecializationService {
 	
 	boolean isSpecCodeExistForEdit(String specCode, Long id);
 	
+	public Map<Long,String> getSpecIdAndName();
 }

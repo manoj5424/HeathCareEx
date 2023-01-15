@@ -1,16 +1,22 @@
 package in.nit.raghu.service.impl;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.comparator.Comparators;
 
 import in.nit.raghu.entity.Specialization;
 import in.nit.raghu.exception.SpecializationNotFoundException;
 import in.nit.raghu.repo.SpecializationRepository;
 import in.nit.raghu.service.ISpecializationService;
+import in.nit.raghu.util.MyCollectionsUtil;
 
 @Service
 public class SpecializationServiceImpl implements ISpecializationService {
@@ -65,5 +71,12 @@ public class SpecializationServiceImpl implements ISpecializationService {
 	public boolean isSpecCodeExistForEdit(String specCode, Long id) {
 
 		return repo.getSpecCodeCountForEdit(specCode, id)>0;
+	}
+
+	@Override
+	public Map<Long, String> getSpecIdAndName() {
+		List<Object[]> list = repo.getSpecIdAndName();
+		Map<Long,String> map = MyCollectionsUtil.convertToMap(list);
+		return map;
 	}
 }
