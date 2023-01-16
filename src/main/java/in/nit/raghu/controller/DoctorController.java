@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +18,15 @@ import in.nit.raghu.entity.Doctor;
 import in.nit.raghu.exception.DoctorNotFoundException;
 import in.nit.raghu.service.IDoctorService;
 import in.nit.raghu.service.ISpecializationService;
+import in.nit.raghu.util.MyMailUtil;
 
 @Controller
 @RequestMapping("/doctor")
 public class DoctorController {
 
+	@Autowired
+	private MyMailUtil mailUtil;
+	
 	@Autowired
 	private IDoctorService service;
 
@@ -56,6 +61,19 @@ public class DoctorController {
 		Long id = service.saveDoctor(doctor);
 		String message = "Doctor ("+id+") is created";
 		attributes.addAttribute("message", message);
+		//send mail
+		if(id!=null) {
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				mailUtil.send(doctor.getEmail(), "SUCCESS", message, new ClassPathResource("/static/myres/sample.pdf"));
+				
+			}
+			
+		}).start();
+		}
+		
 		return "redirect:register";
 	}
 
